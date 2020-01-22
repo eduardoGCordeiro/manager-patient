@@ -1,0 +1,8 @@
+.placeholder-color-mask::placeholder {
+    color: #9da0a4;
+}
+
+.required {
+    color: red;
+    margin-bottom: auto;
+}
