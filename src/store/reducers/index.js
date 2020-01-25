@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux';
 
-import patient from './patient';
+import patientForm from './patientForm';
+import patientList from './patientList';
 
 export default combineReducers({
-    patient,
+    patientForm,
+    patientList
 });

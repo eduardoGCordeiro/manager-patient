@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Container, Row, Col, Card, Nav, Tab } from 'react-bootstrap';
 
-import PatientForm from '../../containers/patientForm';
+import PatientForm from '../../store/containers/patientForm';
 import PatientTable from '../patientTable';
 
 export default class Body extends Component {

@@ -1,7 +1,7 @@
 export function handleInputName (value) {
     var letters = /^[A-Za-z]*$/;
     if (value.match(letters)) {
-      this.setState({ name: value.toUpperCase() });
+      this.props.addChanges('name', value.toUpperCase());
     }
 }
 
@@ -9,45 +9,45 @@ export function handleInputName (value) {
 export function handleInputLastName(value) {
   var letters = /^[A-Za-z]*$/;
   if (value.match(letters)) {
-    this.setState({ last_name: value.toUpperCase() });
+    this.props.addChanges('last_name', value.toUpperCase());
   }
 }
 
 
 export function handleInputAgeOfBirth(value) {
-  this.setState({ age_of_birth: value});
+  this.props.addChanges('age_of_birth', value);
 }
 
 
 export function handleInputPhone(value) {
-  this.setState({ phone: value});
+  this.props.addChanges('phone', value);
 }
 
 
 export function handleInputEmail(value) {
-  this.setState({ email: value});
+  this.props.addChanges('email', value);
 }
 
 
 export function handleInputCpf(value) {
-  this.setState({cpf: value});
+  this.props.addChanges('cpf', value);
 }
 
 
 export function handleInputIdenty(value) {
-  this.setState({identy: value});
+  this.props.addChanges('identy', value);
 }
 
 
 export function handleInputZipCode(value) {
-  this.setState({zip_code: value});
+  this.props.addChanges('zip_code', value);
 }
 
 
 export function handleInputAddress(value) {
   var letters = /^[A-Za-z0-9]*$/;
   if (value.match(letters)) {
-    this.setState({ address: value.toUpperCase() });
+    this.props.addChanges('address', value.toUpperCase());
   }
 }
 
@@ -55,7 +55,7 @@ export function handleInputAddress(value) {
 export function handleInputState(value) {
   var letters = /^[A-Za-z\s]*$/;
   if (value.match(letters)) {
-    this.setState({ state: value.toUpperCase() });
+    this.props.addChanges('state', value.toUpperCase());
   }
 }
 
@@ -63,6 +63,6 @@ export function handleInputState(value) {
 export function handleInputCity(value) {
   var letters = /^[A-Za-z]*$/;
   if (value.match(letters)) {
-    this.setState({ city: value.toUpperCase() });
+    this.props.addChanges('city', value.toUpperCase());
   }
 }

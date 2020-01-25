@@ -1,26 +1,26 @@
 export function validateName(value) {
   if(value === ''){
-    this.setState({name_error: true, name_error_msg: 'Por favor! Insira o nome'});
+    this.props.addErrors('name_error', true,'Por favor! Insira o nome');
   }else {
-    this.setState({name_error: false});
+    this.props.addErrors('name_error', false, '');
   }
 };
 
 
 export function validateLastName(value) {
   if(value === ''){
-    this.setState({last_name_error: true, last_name_error_msg: 'Por favor! Insira o sobrenome do paciente.'});
+    this.props.addErrors('last_name_error', true, 'Por favor! Insira o sobrenome do paciente.');
   }else {
-    this.setState({last_name_error: false});
+    this.props.addErrors('last_name_error', false, '');
   }
 };
 
 
 export function validateAgeOfBirth(value) {
   if(value === ''){
-    this.setState({age_of_birth_error: true, age_of_birth_error_msg: 'Por favor! Insira a data de nascimento.'});
+    this.props.addErrors('age_of_birth_error', true, 'Por favor! Insira a data de nascimento.');
   }else {
-    this.setState({age_of_birth_error: false});
+    this.props.addErrors('age_of_birth_error', false, '');
   }
 };
 
@@ -28,21 +28,21 @@ export function validateAgeOfBirth(value) {
 export function validateEmail(value) {
   let regexValidationEmail = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if(regexValidationEmail.test(value)){
-    this.setState({ email: value, email_error: false});
+    this.props.addErrors('email_error', false, '');
   }else {
-    this.setState({email_error: true, email_error_msg: 'Por favor! Insira um email válido.'}); 
+    this.props.addErrors('email_error', true, 'Por favor! Insira um email válido.');
   }
 };
 
 
 export function validatePhone(value) {
   if(value === ''){
-    this.setState({phone_error: 'is-invalid', phone_error_msg: 'Por favor! Insira o número.'});
+    this.props.addErrors('phone_error', 'is-invalid', 'Por favor! Insira o número.');
   }else {
     if(value.includes('_')){
-      this.setState({phone_error: 'is-invalid', phone_error_msg: 'Por favor! Insira um número válido.'});
+      this.props.addErrors('phone_error', 'is-invalid', 'Por favor! Insira um número válido.');
     }else {
-      this.setState({phone_error: ''});
+      this.props.addErrors('phone_error', '', '');
     }
   }
 };
@@ -50,12 +50,12 @@ export function validatePhone(value) {
 
 export function validateCpf(value) {
   if(value === ''){
-    this.setState({cpf_error: 'is-invalid', cpf_error_msg: 'Por favor! Insira o cpf.'});
+    this.props.addErrors('cpf_error', 'is-invalid', 'Por favor! Insira o cpf.');
   }else {
     if(value.includes('_')){
-      this.setState({cpf_error: 'is-invalid', cpf_error_msg: 'Por favor! Insira um cpf válido.'});
+      this.props.addErrors('cpf_error', 'is-invalid', 'Por favor! Insira um cpf válido.');
     }else {
-      this.setState({cpf_error: ''});
+      this.props.addErrors('cpf_error', '', '');
     }
   }
 };
@@ -63,12 +63,12 @@ export function validateCpf(value) {
 
 export function validateIdenty(value) {
   if(value === ''){
-    this.setState({identy_error: 'is-invalid', identy_error_msg: 'Por favor! Insira a identidade.'});
+    this.props.addErrors('identy_error', 'is-invalid', 'Por favor! Insira a identidade.');
   }else {
     if(value.includes('_')){
-      this.setState({identy_error: 'is-invalid', identy_error_msg: 'Por favor! Insira uma identidade válida.'});
+      this.props.addErrors('identy_error', 'is-invalid', 'Por favor! Insira uma identidade válida.');
     }else {
-      this.setState({identy_error: ''});
+      this.props.addErrors('identy_error', '', '');
     }
   }
 }
@@ -76,12 +76,12 @@ export function validateIdenty(value) {
 
 export function validateZipCode(value) {
     if(value === ''){
-      this.setState({zip_code_error: 'is-invalid', zip_code_error_msg: 'Por favor! Insira o cep.'});
+      this.props.addErrors('zip_code_error', 'is-invalid', 'Por favor! Insira o cep.');
     }else {
       if(value.includes('_')){
-        this.setState({zip_code_error: 'is-invalid', zip_code_error_msg: 'Por favor! Insira um cep válido.'});
+        this.props.addErrors('zip_code_error', 'is-invalid', 'Por favor! Insira um cep válido.');
       }else {
-        this.setState({zip_code_error: ''});
+        this.props.addErrors('zip_code_error', '', '');
       }
     }
 }
@@ -89,12 +89,12 @@ export function validateZipCode(value) {
 
 export function validateState(value) {
     if(value === ''){
-      this.setState({state_error: true, state_error_msg: 'Por favor! Insira o estado.'});
+      this.props.addErrors('state_error', true, 'Por favor! Insira o estado.');
     }else {
       if(value.includes('_')){
-        this.setState({state_error: true, state_error_msg: 'Por favor! Insira um estado válido.'});
+        this.props.addErrors('state_error', true, 'Por favor! Insira um estado válido.');
       }else {
-        this.setState({state_error: false});
+        this.props.addErrors('state_error', false, '');
       }
     }
 }
@@ -102,12 +102,12 @@ export function validateState(value) {
 
 export function validateCity(value) {
     if(value === ''){
-      this.setState({city_error: true, city_error_msg: 'Por favor! Insira a cidade.'});
+      this.props.addErrors('city_error', true, 'Por favor! Insira a cidade.');
     }else {
       if(value.includes('_')){
-        this.setState({city_error: true, city_error_msg: 'Por favor! Insira uma cidade válida.'});
+        this.props.addErrors('city_error', true, 'Por favor! Insira uma cidade válida.');
       }else {
-        this.setState({city_error: false});
+        this.props.addErrors('city_error', false, '');
       }
     }
 }
@@ -115,12 +115,12 @@ export function validateCity(value) {
 
 export function validateAddress(value) {
   if(value === ''){
-    this.setState({address_error: true, address_error_msg: 'Por favor! Insira o endereço.'});
+    this.props.addErrors('address_error', true, 'Por favor! Insira o endereço.');
   }else {
     if(value.includes('_')){
-      this.setState({address_error: true, address_error_msg: 'Por favor! Insira um endereço válido.'});
+      this.props.addErrors('address_error', true, 'Por favor! Insira um endereço válido.');
     }else {
-      this.setState({address_error: false});
+      this.props.addErrors('address_error', false, '');
     }
   }
 }
