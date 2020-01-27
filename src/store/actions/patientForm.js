@@ -1,4 +1,11 @@
-import {ADD_CHANGES, ADD_ERRORS, ADD_NEW_PATIENT} from '../actions/actionsType';
+import {ADD_CHANGES, ADD_ERRORS, ADD_NEW_PATIENT, CLEAR_DATA} from '../actions/actionsType';
+
+
+export function clearData(){
+  return{
+    type: CLEAR_DATA
+  }
+}
 
 
 export function addChanges(name_field, value_field){

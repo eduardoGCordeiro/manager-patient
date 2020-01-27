@@ -216,9 +216,7 @@ export default class PatientForm extends Component {
    * Submit control
   */
 
-  submitForm(event){
-    event.preventDefault();
-
+  validateFields(){
     this.validateName(this.props.patient_data.patient_form_edit.name);
     this.validateLastName(this.props.patient_data.patient_form_edit.last_name);
     this.validateAgeOfBirth(this.props.patient_data.patient_form_edit.age_of_birth);
@@ -230,13 +228,34 @@ export default class PatientForm extends Component {
     this.validateState(this.props.patient_data.patient_form_edit.state);
     this.validateCity(this.props.patient_data.patient_form_edit.city);
     this.validateAddress(this.props.patient_data.patient_form_edit.address);
-    swal({
-      icon: 'warning',
-      title: 'Atenção!',
-      text: 'Por favor, verifique os campos em destaque!',
-    });
-    return false;
   }
+
+  submitForm(event){
+    event.preventDefault();
+    let invalid_fields = false;
+
+    for(let value of Object.values(this.props.patient_data.errors)){
+      if(value !== false && value !== ''){
+        invalid_fields = true;
+      }
+    }
+
+    if(invalid_fields){
+      swal({
+        icon: 'warning',
+        title: 'Atenção!',
+        text: 'Por favor, verifique os campos em destaque!',
+      });
+      return false;
+    }else {
+      //Action save patient data.
+      swal({
+        icon: 'success',
+        title: 'Sucesso!',
+        text: 'Os dados foram salvos com sucesso!',
+      })
+    }
+}
 
   render() {
     return (
@@ -401,10 +420,10 @@ export default class PatientForm extends Component {
 
 
           <ButtonToolbar className="d-flex justify-content-center">
-            <Button type="submit" variant="success" className="mr-1">
+            <Button type="submit" variant="success" className="mr-1" onClick={() => this.validateFields()}>
               Salvar
             </Button>
-            <Button type="button" variant="secondary">
+            <Button type="button" variant="secondary" onClick={() => this.props.clearData()}>
               Cancelar
             </Button>
           </ButtonToolbar>

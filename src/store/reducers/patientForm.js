@@ -1,7 +1,7 @@
-import {ADD_CHANGES, ADD_ERRORS, ADD_NEW_PATIENT} from '../actions/actionsType';
+import {ADD_CHANGES, ADD_ERRORS, ADD_NEW_PATIENT, CLEAR_DATA} from '../actions/actionsType';
 
 const INITIAL_STATE = {
-
+    loading: false,
     patient_form_edit: {
         name: '',
         last_name: '',
@@ -45,8 +45,15 @@ const INITIAL_STATE = {
 };
 
 export default function patientForm(state = INITIAL_STATE, action){
-    
     switch (action.type) {
+
+        case CLEAR_DATA:
+            return {
+                ...state,
+                patient_form_edit: INITIAL_STATE.patient_form_edit,
+                errors: INITIAL_STATE.errors,
+                errors_msg: INITIAL_STATE.errors_msg
+            };
 
         case ADD_CHANGES:
             return {
@@ -55,7 +62,7 @@ export default function patientForm(state = INITIAL_STATE, action){
                     ...state.patient_form_edit,
                     [action.field]: action.value
                 } 
-            }
+            };
 
         case ADD_ERRORS:
             return {
@@ -68,7 +75,7 @@ export default function patientForm(state = INITIAL_STATE, action){
                     ...state.errors_msg,
                     [action.field_error_msg]: action.value_error_msg
                 } 
-            }    
+            };    
 
         case ADD_NEW_PATIENT:
             return {...state};
