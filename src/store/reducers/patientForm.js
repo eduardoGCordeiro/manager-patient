@@ -1,7 +1,8 @@
 import {ADD_CHANGES, ADD_ERRORS, ADD_NEW_PATIENT} from '../actions/actionsType';
 
 const INITIAL_STATE = {
-    patientFormEdit: {
+
+    patient_form_edit: {
         name: '',
         last_name: '',
         age_of_birth: '',
@@ -26,6 +27,8 @@ const INITIAL_STATE = {
         address_error: false,
         state_error: false,
         city_error: false,
+    },
+    errors_msg: {
         name_error_msg: '',
         last_name_error_msg: '',
         age_of_birth_error_msg: '',
@@ -38,17 +41,18 @@ const INITIAL_STATE = {
         state_error_msg: '',
         city_error_msg: '',
     }
+
 };
 
 export default function patientForm(state = INITIAL_STATE, action){
-
+    
     switch (action.type) {
 
         case ADD_CHANGES:
             return {
                 ...state, 
-                patientFormEdit: {
-                    ...state.patientFormEdit,
+                patient_form_edit: {
+                    ...state.patient_form_edit,
                     [action.field]: action.value
                 } 
             }
@@ -58,7 +62,10 @@ export default function patientForm(state = INITIAL_STATE, action){
                 ...state, 
                 errors: {
                     ...state.errors,
-                    [action.field_error]: action.value_error,
+                    [action.field_error]: action.value_error
+                }, 
+                errors_msg: {
+                    ...state.errors_msg,
                     [action.field_error_msg]: action.value_error_msg
                 } 
             }    
