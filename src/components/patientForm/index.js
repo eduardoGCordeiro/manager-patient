@@ -13,16 +13,16 @@ export default class PatientForm extends Component {
   */
 
   handleInputName (value) {
-    var letters = /^[A-Za-z]*$/;
-    if (value.match(letters)) {
+    let regex_validation_name = /^[A-Za-z]*$/;
+    if (regex_validation_name.test(value)) {
       this.props.addChanges('name', value.toUpperCase());
     }
   }
 
 
   handleInputLastName(value) {
-    var letters = /^[A-Za-z]*$/;
-    if (value.match(letters)) {
+    let regex_validation_last_name = /^[A-Za-z]*$/;
+    if (regex_validation_last_name.test(value)) {
       this.props.addChanges('last_name', value.toUpperCase());
     }
   }
@@ -58,26 +58,26 @@ export default class PatientForm extends Component {
   }
 
 
-  handleInputAddress(value) {
-    var letters = /^[A-Za-z0-9]*$/;
-    if (value.match(letters)) {
-      this.props.addChanges('address', value.toUpperCase());
-    }
-  }
-
-
   handleInputState(value) {
-    var letters = /^[A-Za-z\s]*$/;
-    if (value.match(letters)) {
+    let regex_validation_state = /^[A-Za-z\s]*$/;
+    if (regex_validation_state.test(value)) {
       this.props.addChanges('state', value.toUpperCase());
     }
   }
 
 
   handleInputCity(value) {
-    var letters = /^[A-Za-z]*$/;
-    if (value.match(letters)) {
+    var regex_validation_city = /^[A-Za-z]*$/;
+    if (regex_validation_city.test(value)) {
       this.props.addChanges('city', value.toUpperCase());
+    }
+  }
+
+
+  handleInputAddress(value) {
+    let regex_validation_address = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]*$/;
+    if (regex_validation_address.test(value)) {
+      this.props.addChanges('address', value.toUpperCase());
     }
   }
 
@@ -85,49 +85,49 @@ export default class PatientForm extends Component {
    * Blur input control 
   */
 
-  validateName(value) {
-    if(value === ''){
-      this.props.addErrors('name_error', true,'Por favor! Insira o nome');
+  validateName() {
+    if(this.props.patient_data.patient_form_edit.name === ''){
+      this.props.addErrors('name_error', true,'Por favor, insira o nome');
     }else {
       this.props.addErrors('name_error', false, '');
     }
   };
 
 
-  validateLastName(value) {
-    if(value === ''){
-      this.props.addErrors('last_name_error', true, 'Por favor! Insira o sobrenome do paciente.');
+  validateLastName() {
+    if(this.props.patient_data.patient_form_edit.last_name === ''){
+      this.props.addErrors('last_name_error', true, 'Por favor, insira o sobrenome do paciente.');
     }else {
       this.props.addErrors('last_name_error', false, '');
     }
   };
 
 
-  validateAgeOfBirth(value) {
-    if(value === ''){
-      this.props.addErrors('age_of_birth_error', true, 'Por favor! Insira a data de nascimento.');
+  validateAgeOfBirth() {
+    if(this.props.patient_data.patient_form_edit.age_of_birth === ''){
+      this.props.addErrors('age_of_birth_error', true, 'Por favor, insira a data de nascimento.');
     }else {
       this.props.addErrors('age_of_birth_error', false, '');
     }
   };
 
 
-  validateEmail(value) {
-    let regexValidationEmail = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if(regexValidationEmail.test(value)){
+  validateEmail() {
+    let regex_validation_email = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if(regex_validation_email.test(this.props.patient_data.patient_form_edit.email)){
       this.props.addErrors('email_error', false, '');
     }else {
-      this.props.addErrors('email_error', true, 'Por favor! Insira um email válido.');
+      this.props.addErrors('email_error', true, 'Por favor, insira um email válido.');
     }
   };
 
 
-  validatePhone(value) {
-    if(value === ''){
-      this.props.addErrors('phone_error', 'is-invalid', 'Por favor! Insira o número.');
+  validatePhone() {
+    if(this.props.patient_data.patient_form_edit.phone === ''){
+      this.props.addErrors('phone_error', 'is-invalid', 'Por favor, insira o número.');
     }else {
-      if(value.includes('_')){
-        this.props.addErrors('phone_error', 'is-invalid', 'Por favor! Insira um número válido.');
+      if(this.props.patient_data.patient_form_edit.phone.includes('_')){
+        this.props.addErrors('phone_error', 'is-invalid', 'Por favor, insira um número válido.');
       }else {
         this.props.addErrors('phone_error', '', '');
       }
@@ -135,12 +135,12 @@ export default class PatientForm extends Component {
   };
 
 
-  validateCpf(value) {
-    if(value === ''){
-      this.props.addErrors('cpf_error', 'is-invalid', 'Por favor! Insira o cpf.');
+  validateCpf() {
+    if(this.props.patient_data.patient_form_edit.cpf === ''){
+      this.props.addErrors('cpf_error', 'is-invalid', 'Por favor, insira o cpf.');
     }else {
-      if(value.includes('_')){
-        this.props.addErrors('cpf_error', 'is-invalid', 'Por favor! Insira um cpf válido.');
+      if(this.props.patient_data.patient_form_edit.cpf.includes('_')){
+        this.props.addErrors('cpf_error', 'is-invalid', 'Por favor, insira um cpf válido.');
       }else {
         this.props.addErrors('cpf_error', '', '');
       }
@@ -148,12 +148,12 @@ export default class PatientForm extends Component {
   };
 
 
-  validateIdenty(value) {
-    if(value === ''){
-      this.props.addErrors('identy_error', 'is-invalid', 'Por favor! Insira a identidade.');
+  validateIdenty() {
+    if(this.props.patient_data.patient_form_edit.identy === ''){
+      this.props.addErrors('identy_error', 'is-invalid', 'Por favor, insira a identidade.');
     }else {
-      if(value.includes('_')){
-        this.props.addErrors('identy_error', 'is-invalid', 'Por favor! Insira uma identidade válida.');
+      if(this.props.patient_data.patient_form_edit.identy.includes('_')){
+        this.props.addErrors('identy_error', 'is-invalid', 'Por favor, insira uma identidade válida.');
       }else {
         this.props.addErrors('identy_error', '', '');
       }
@@ -161,12 +161,12 @@ export default class PatientForm extends Component {
   }
 
 
-  validateZipCode(value) {
-      if(value === ''){
-        this.props.addErrors('zip_code_error', 'is-invalid', 'Por favor! Insira o cep.');
+  validateZipCode() {
+      if(this.props.patient_data.patient_form_edit.zip_code === ''){
+        this.props.addErrors('zip_code_error', 'is-invalid', 'Por favor, insira o cep.');
       }else {
-        if(value.includes('_')){
-          this.props.addErrors('zip_code_error', 'is-invalid', 'Por favor! Insira um cep válido.');
+        if(this.props.patient_data.patient_form_edit.zip_code.includes('_')){
+          this.props.addErrors('zip_code_error', 'is-invalid', 'Por favor, insira um cep válido.');
         }else {
           this.props.addErrors('zip_code_error', '', '');
         }
@@ -174,12 +174,12 @@ export default class PatientForm extends Component {
   }
 
 
-  validateState(value) {
-      if(value === ''){
-        this.props.addErrors('state_error', true, 'Por favor! Insira o estado.');
+  validateState() {
+      if(this.props.patient_data.patient_form_edit.state === ''){
+        this.props.addErrors('state_error', true, 'Por favor, insira o estado.');
       }else {
-        if(value.includes('_')){
-          this.props.addErrors('state_error', true, 'Por favor! Insira um estado válido.');
+        if(this.props.patient_data.patient_form_edit.state.includes('_')){
+          this.props.addErrors('state_error', true, 'Por favor, insira um estado válido.');
         }else {
           this.props.addErrors('state_error', false, '');
         }
@@ -187,12 +187,12 @@ export default class PatientForm extends Component {
   }
 
 
-  validateCity(value) {
-      if(value === ''){
-        this.props.addErrors('city_error', true, 'Por favor! Insira a cidade.');
+  validateCity() {
+      if(this.props.patient_data.patient_form_edit.city === ''){
+        this.props.addErrors('city_error', true, 'Por favor, insira a cidade.');
       }else {
-        if(value.includes('_')){
-          this.props.addErrors('city_error', true, 'Por favor! Insira uma cidade válida.');
+        if(this.props.patient_data.patient_form_edit.city.includes('_')){
+          this.props.addErrors('city_error', true, 'Por favor, insira uma cidade válida.');
         }else {
           this.props.addErrors('city_error', false, '');
         }
@@ -200,12 +200,13 @@ export default class PatientForm extends Component {
   }
 
 
-  validateAddress(value) {
-    if(value === ''){
-      this.props.addErrors('address_error', true, 'Por favor! Insira o endereço.');
+  validateAddress() {
+    let regex_validation_address = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]*$/;
+    if(this.props.patient_data.patient_form_edit.address === ''){
+      this.props.addErrors('address_error', true, 'Por favor, insira o endereço.');
     }else {
-      if(value.includes('_')){
-        this.props.addErrors('address_error', true, 'Por favor! Insira um endereço válido.');
+      if(regex_validation_address.test(this.props.patient_data.patient_form_edit.address)){
+        this.props.addErrors('address_error', true, 'Por favor, insira um endereço válido.');
       }else {
         this.props.addErrors('address_error', false, '');
       }
@@ -215,23 +216,21 @@ export default class PatientForm extends Component {
   /**
    * Submit control
   */
-
-  validateFields(){
-    this.validateName(this.props.patient_data.patient_form_edit.name);
-    this.validateLastName(this.props.patient_data.patient_form_edit.last_name);
-    this.validateAgeOfBirth(this.props.patient_data.patient_form_edit.age_of_birth);
-    this.validatePhone(this.props.patient_data.patient_form_edit.phone);
-    this.validateEmail(this.props.patient_data.patient_form_edit.email);
-    this.validateCpf(this.props.patient_data.patient_form_edit.cpf);
-    this.validateIdenty(this.props.patient_data.patient_form_edit.identy);
-    this.validateZipCode(this.props.patient_data.patient_form_edit.zip_code);
-    this.validateState(this.props.patient_data.patient_form_edit.state);
-    this.validateCity(this.props.patient_data.patient_form_edit.city);
-    this.validateAddress(this.props.patient_data.patient_form_edit.address);
-  }
-
   submitForm(event){
     event.preventDefault();
+
+    this.validateName();
+    this.validateLastName();
+    this.validateAgeOfBirth();
+    this.validatePhone();
+    this.validateEmail();
+    this.validateCpf();
+    this.validateIdenty();
+    this.validateZipCode();
+    this.validateState();
+    this.validateCity();
+    this.validateAddress();
+
     let invalid_fields = false;
 
     for(let value of Object.values(this.props.patient_data.errors)){
@@ -269,7 +268,7 @@ export default class PatientForm extends Component {
                 placeholder="Insira o nome do paciente"
                 value={this.props.patient_data.patient_form_edit.name}
                 onChange={(event) => this.handleInputName(event.target.value)}
-                onBlur={(event) => this.validateName(event.target.value)}
+                onBlur={() => this.validateName()}
                 isInvalid={this.props.patient_data.errors.name_error}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.name_error_msg}</Form.Control.Feedback>
@@ -283,7 +282,7 @@ export default class PatientForm extends Component {
                 placeholder="Insira o sobrenome do paciente"
                 value={this.props.patient_data.patient_form_edit.last_name}
                 onChange={(event) => this.handleInputLastName(event.target.value)}
-                onBlur={(event) => this.validateLastName(event.target.value)}
+                onBlur={() => this.validateLastName()}
                 isInvalid={this.props.patient_data.errors.last_name_error}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.last_name_error_msg}</Form.Control.Feedback>
@@ -298,7 +297,7 @@ export default class PatientForm extends Component {
                 max={CURRENT_DATE}
                 value={this.props.patient_data.patient_form_edit.age_of_birth}
                 onChange={(event) => this.handleInputAgeOfBirth(event.target.value)}
-                onBlur={(event) => this.validateAgeOfBirth(event.target.value)}
+                onBlur={() => this.validateAgeOfBirth()}
                 isInvalid={this.props.patient_data.errors.age_of_birth_error}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.age_of_birth_error_msg}</Form.Control.Feedback>
@@ -313,7 +312,7 @@ export default class PatientForm extends Component {
                 mask="(99)99999-9999"
                 value={this.props.patient_data.patient_form_edit.phone}
                 onChange={(event) => this.handleInputPhone(event.target.value)}
-                onBlur={(event) => this.validatePhone(event.target.value)}
+                onBlur={() => this.validatePhone()}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.phone_error_msg}</Form.Control.Feedback>
             </Form.Group>
@@ -327,7 +326,7 @@ export default class PatientForm extends Component {
                 placeholder="Insira o e-mail do paciente"
                 defaultValue={this.props.patient_data.patient_form_edit.email}
                 onChange={(event) => this.handleInputEmail(event.target.value)}
-                onBlur={(event) => this.validateEmail(event.target.value)}
+                onBlur={() => this.validateEmail()}
                 isInvalid={this.props.patient_data.errors.email_error}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.email_error_msg}</Form.Control.Feedback>
@@ -342,7 +341,7 @@ export default class PatientForm extends Component {
                 mask="999.999.999-99"
                 value={this.props.patient_data.patient_form_edit.cpf}
                 onChange={(event) => this.handleInputCpf(event.target.value)}
-                onBlur={(event) => this.validateCpf(event.target.value)}
+                onBlur={() => this.validateCpf()}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.cpf_error_msg}</Form.Control.Feedback>
             </Form.Group>
@@ -356,7 +355,7 @@ export default class PatientForm extends Component {
                 mask="99.999.999-9"
                 value={this.props.patient_data.patient_form_edit.identy}
                 onChange={(event) => this.handleInputIdenty(event.target.value)}
-                onBlur={(event) => this.validateIdenty(event.target.value)}
+                onBlur={() => this.validateIdenty()}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.identy_error_msg}</Form.Control.Feedback>
             </Form.Group>
@@ -370,7 +369,7 @@ export default class PatientForm extends Component {
                 mask="99999-999"
                 value={this.props.patient_data.patient_form_edit.zip_code}
                 onChange={(event) => this.handleInputZipCode(event.target.value)}
-                onBlur={(event) => this.validateZipCode(event.target.value)}
+                onBlur={() => this.validateZipCode()}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.zip_code_error_msg}</Form.Control.Feedback>
             </Form.Group>
@@ -383,7 +382,7 @@ export default class PatientForm extends Component {
                 placeholder="Insira o estado do paciente"
                 value={this.props.patient_data.patient_form_edit.state}
                 onChange={(event) => this.handleInputState(event.target.value)}
-                onBlur={(event) => this.validateState(event.target.value)}
+                onBlur={() => this.validateState()}
                 isInvalid={this.props.patient_data.errors.state_error}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.state_error_msg}</Form.Control.Feedback>
@@ -398,7 +397,7 @@ export default class PatientForm extends Component {
                 placeholder="Insira a cidade do paciente"
                 value={this.props.patient_data.patient_form_edit.city}
                 onChange={(event) => this.handleInputCity(event.target.value)}
-                onBlur={(event) => this.validateCity(event.target.value)}
+                onBlur={() => this.validateCity()}
                 isInvalid={this.props.patient_data.errors.city_error}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.city_error_msg}</Form.Control.Feedback>
@@ -411,7 +410,7 @@ export default class PatientForm extends Component {
                 placeholder="Insira o endereço do paciente"
                 value={this.props.patient_data.patient_form_edit.address}
                 onChange={(event) => this.handleInputAddress(event.target.value)}
-                onBlur={(event) => this.validateAddress(event.target.value)}
+                onBlur={() => this.validateAddress()}
                 isInvalid={this.props.patient_data.errors.address_error}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.address_error_msg}</Form.Control.Feedback>
@@ -420,7 +419,7 @@ export default class PatientForm extends Component {
 
 
           <ButtonToolbar className="d-flex justify-content-center">
-            <Button type="submit" variant="success" className="mr-1" onClick={() => this.validateFields()}>
+            <Button type="submit" variant="success" className="mr-1">
               Salvar
             </Button>
             <Button type="button" variant="secondary" onClick={() => this.props.clearData()}>

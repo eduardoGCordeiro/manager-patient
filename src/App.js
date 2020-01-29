@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 
 import HeaderPage from './components/headerPage';
-import BodyPage from './components/bodyPage';
+import BodyPage from './store/containers/bodyPage';
 import FooterPage from './components/footerPage';
 
 class App extends Component{
@@ -16,7 +16,7 @@ class App extends Component{
       <div className="App bg-light min-vh-100">
         <HeaderPage/>
         <Provider store={ store }>
-          <BodyPage/>  
+        <BodyPage/>  
         </Provider>
         <FooterPage/>
       </div>

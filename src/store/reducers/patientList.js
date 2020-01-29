@@ -4,7 +4,7 @@ const INITIAL_STATE = {
     patientFormData: {}
 };
 
-export default function patientList(state = INITIAL_STATE, action = {}){
+export default function patientList(state = INITIAL_STATE, action){
 
     switch (action.type) {
 
