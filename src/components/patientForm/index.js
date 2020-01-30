@@ -6,11 +6,10 @@ import '../../style/patientForm.css';
 import { Form, Col, ButtonToolbar, Button } from 'react-bootstrap';
 import { MIN_AGE_PATIENT, CURRENT_DATE } from '../../constants';
 
+
 export default class PatientForm extends Component {
   
-  /**
-   * Handle input control
-  */
+  /**** Funções para controle dos campos *****/
 
   handleInputName (value) {
     let regex_validation_name = /^[A-Za-z]*$/;
@@ -81,9 +80,17 @@ export default class PatientForm extends Component {
     }
   }
 
-  /**
-   * Blur input control 
-  */
+
+  handleInputAddressNumber(value) {
+    let regex_validation_address_number = /^[0-9]*$/;
+    if (regex_validation_address_number.test(value)) {
+      this.props.addChanges('address_number', value.toUpperCase());
+    }
+  }
+
+
+  /**** Funções para validação dos dados *****/
+
 
   validateName() {
     if(this.props.patient_data.patient_form_edit.name === ''){
@@ -114,10 +121,12 @@ export default class PatientForm extends Component {
 
   validateEmail() {
     let regex_validation_email = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if(regex_validation_email.test(this.props.patient_data.patient_form_edit.email)){
-      this.props.addErrors('email_error', false, '');
-    }else {
-      this.props.addErrors('email_error', true, 'Por favor, insira um email válido.');
+    if(this.props.patient_data.patient_form_edit.email !== ''){
+      if(regex_validation_email.test(this.props.patient_data.patient_form_edit.email)){
+        this.props.addErrors('email_error', false, '');
+      }else {
+        this.props.addErrors('email_error', true, 'Por favor, insira um email válido.');
+      }
     }
   };
 
@@ -213,11 +222,25 @@ export default class PatientForm extends Component {
     }
   }
 
-  /**
-   * Submit control
-  */
+
+  validateAddressNumber() {
+    if(this.props.patient_data.patient_form_edit.address_number === ''){
+      this.props.addErrors('address_number_error', true, 'Por favor, insira o número do endereço.');
+    }else {
+      this.props.addErrors('address_number_error', false, '');
+    }
+  }
+
+  /**** Função para enviar os dados do paciente *****/
+
+
   submitForm(event){
     event.preventDefault();
+    
+    //Condição para não executar a função quando o click do mouse for do lado direito.
+    if( event.nativeEvent.which === 3 ) {
+      return false; 
+    } 
 
     this.validateName();
     this.validateLastName();
@@ -230,11 +253,12 @@ export default class PatientForm extends Component {
     this.validateState();
     this.validateCity();
     this.validateAddress();
+    this.validateAddressNumber();
 
     let invalid_fields = false;
 
-    for(let value of Object.values(this.props.patient_data.errors)){
-      if(value !== false && value !== ''){
+    for(let value of Object.values(this.props.patient_data.patient_form_edit)){
+      if(value === ''){
         invalid_fields = true;
       }
     }
@@ -259,7 +283,7 @@ export default class PatientForm extends Component {
   render() {
     return (
       <div>
-        <Form onSubmit={(event) => this.submitForm(event)}>
+        <Form>
           <Form.Row>
             <Form.Group as={Col} md="3">
               <Form.Label> Nome <label className="required">*</label> </Form.Label>
@@ -415,18 +439,30 @@ export default class PatientForm extends Component {
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.address_error_msg}</Form.Control.Feedback>
             </Form.Group>
+
+
+            <Form.Group as={Col} md="2">
+              <Form.Label> Nº Endereço <label className="required">*</label> </Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Número endereço"
+                value={this.props.patient_data.patient_form_edit.address_number}
+                onChange={(event) => this.handleInputAddressNumber(event.target.value)}
+                onBlur={() => this.validateAddressNumber()}
+                isInvalid={this.props.patient_data.errors.address_number_error}
+              />
+              <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.address_number_error_msg}</Form.Control.Feedback>
+            </Form.Group>
           </Form.Row>
 
-
           <ButtonToolbar className="d-flex justify-content-center">
-            <Button type="submit" variant="success" className="mr-1">
-              Salvar
-            </Button>
-            <Button type="button" variant="secondary" onClick={() => this.props.clearData()}>
-              Cancelar
-            </Button>
+                <Button type="button" variant="success" className="mr-1" onMouseDown={(event) => this.submitForm(event)}>
+                  Salvar
+                </Button>
+                <Button type="button" variant="secondary" onClick={() => this.props.clearData()}>
+                  Cancelar
+                </Button>
           </ButtonToolbar>
-
 
         </Form>
       </div>

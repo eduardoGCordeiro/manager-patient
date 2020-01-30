@@ -12,6 +12,7 @@ const INITIAL_STATE = {
         identy: '',
         zip_code: '',
         address: '',
+        address_number: '',
         state: '',
         city: '',
     },
@@ -25,6 +26,7 @@ const INITIAL_STATE = {
         identy_error: '',
         zip_code_error: '',
         address_error: false,
+        address_number_error: false,
         state_error: false,
         city_error: false,
     },
@@ -38,6 +40,7 @@ const INITIAL_STATE = {
         identy_error_msg: '',
         zip_code_error_msg: '',
         address_error_msg: '',
+        address_number_error_msg: '',
         state_error_msg: '',
         city_error_msg: '',
     }
