@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import InputMask from 'react-input-mask';
-import swal from 'sweetalert';
+import SweetAlert from 'react-bootstrap-sweetalert';
 import '../../style/patientForm.css';
 
-import { Form, Col, ButtonToolbar, Button } from 'react-bootstrap';
+import { Form, Col, ButtonToolbar, Button, Spinner } from 'react-bootstrap';
 import { MIN_AGE_PATIENT, CURRENT_DATE } from '../../constants';
 
 
@@ -12,7 +12,7 @@ export default class PatientForm extends Component {
   /**** Funções para controle dos campos *****/
 
   handleInputName (value) {
-    let regex_validation_name = /^[A-Za-z]*$/;
+    let regex_validation_name = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]*$/;
     if (regex_validation_name.test(value)) {
       this.props.addChanges('name', value.toUpperCase());
     }
@@ -20,7 +20,7 @@ export default class PatientForm extends Component {
 
 
   handleInputLastName(value) {
-    let regex_validation_last_name = /^[A-Za-z]*$/;
+    let regex_validation_last_name = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]*$/;
     if (regex_validation_last_name.test(value)) {
       this.props.addChanges('last_name', value.toUpperCase());
     }
@@ -58,7 +58,7 @@ export default class PatientForm extends Component {
 
 
   handleInputState(value) {
-    let regex_validation_state = /^[A-Za-z\s]*$/;
+    let regex_validation_state = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]*$/;
     if (regex_validation_state.test(value)) {
       this.props.addChanges('state', value.toUpperCase());
     }
@@ -66,7 +66,7 @@ export default class PatientForm extends Component {
 
 
   handleInputCity(value) {
-    var regex_validation_city = /^[A-Za-z]*$/;
+    var regex_validation_city = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]*$/;
     if (regex_validation_city.test(value)) {
       this.props.addChanges('city', value.toUpperCase());
     }
@@ -210,7 +210,7 @@ export default class PatientForm extends Component {
 
 
   validateAddress() {
-    let regex_validation_address = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]*$/;
+    let regex_validation_address = /^[\pL\pM\p{Zs}.-]+$/;
     if(this.props.patient_data.patient_form_edit.address === ''){
       this.props.addErrors('address_error', true, 'Por favor, insira o endereço.');
     }else {
@@ -230,6 +230,7 @@ export default class PatientForm extends Component {
       this.props.addErrors('address_number_error', false, '');
     }
   }
+
 
   /**** Função para enviar os dados do paciente *****/
 
@@ -263,26 +264,36 @@ export default class PatientForm extends Component {
       }
     }
 
-    if(invalid_fields){
-      swal({
-        icon: 'warning',
-        title: 'Atenção!',
-        text: 'Por favor, verifique os campos em destaque!',
-      });
-      return false;
-    }else {
-      //Action save patient data.
-      swal({
-        icon: 'success',
-        title: 'Sucesso!',
-        text: 'Os dados foram salvos com sucesso!',
-      })
+    if(!invalid_fields){
+      if(this.props.patient_data.patient_id === ''){
+        this.props.fetchSaveData(this.props.patient_data.patient_form_edit);
+      }else {
+        this.props.editData();
+      }
     }
-}
+
+  }
 
   render() {
     return (
       <div>
+      
+        <SweetAlert 
+          success
+          title="Sucesso!"
+          show={this.props.patient_data.send_data_success}
+          onConfirm={() => this.props.confirmAlert('send_data_success', false)}> Dados atualizados com sucesso.
+        </SweetAlert>
+
+        <SweetAlert 
+          error
+          title="Erro!"
+          show={this.props.patient_data.send_data_error}
+          onConfirm={() => this.props.confirmAlert('send_data_error', false)}> Tente novamente mais tarde.
+        </SweetAlert>
+        
+        {this.props.patient_data.loading ? <div className="spinner"><Spinner animation="border" variant="primary" /></div> : null}
+
         <Form>
           <Form.Row>
             <Form.Group as={Col} md="3">
@@ -441,7 +452,7 @@ export default class PatientForm extends Component {
             </Form.Group>
 
 
-            <Form.Group as={Col} md="2">
+            <Form.Group as={Col} md="3">
               <Form.Label> Nº Endereço <label className="required">*</label> </Form.Label>
               <Form.Control
                 type="text"

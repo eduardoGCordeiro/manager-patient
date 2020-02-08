@@ -8,7 +8,7 @@ export default class Header extends Component{
             <div>
               <Navbar className='bg-header' variant='dark'>
                 <Navbar.Brand href='/home'>
-                  <Image src="icon-health.png" width="30" height="30" className="d-inline-block align-top mr-2"/>
+                  <Image src={require('../images/icon-health.png')}  width="30" height="30" className="d-inline-block align-top mr-2"/>
                   Patient Manager
                 </Navbar.Brand>
               </Navbar>

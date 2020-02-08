@@ -1,11 +1,10 @@
 import React from 'react';
-
 import { Container, Row, Col, Card, Nav, Tab } from 'react-bootstrap';
 
 import PatientForm from '../../store/containers/patientForm';
-import PatientTable from '../../store/containers/patientTable';
+import PatientList from '../../store/containers/patientList';
 
-const BodyPage = ({body_state, clearData}) => (
+const BodyPage = ({clearData, fetchPatients}) => (
     <main className="bg-light">
         <Container className='pt-5 pb-3'>
             <Row>
@@ -17,10 +16,10 @@ const BodyPage = ({body_state, clearData}) => (
                                     <Col>
                                         <Nav variant='pills' defaultActiveKey='patient-register'>
                                             <Nav.Item>
-                                                <Nav.Link eventKey='patient-register' onClick={clearData}>Cadastro de pacientes</Nav.Link>
+                                                <Nav.Link eventKey='patient-register' onClick={ () => clearData() } >Cadastro de pacientes</Nav.Link>
                                             </Nav.Item>
                                             <Nav.Item>
-                                                <Nav.Link eventKey='patient-list' onClick={clearData}>Lista de pacientes</Nav.Link>
+                                                <Nav.Link eventKey='patient-list' onClick={ () => fetchPatients() } >Lista de pacientes</Nav.Link>
                                             </Nav.Item>
                                         </Nav>
                                     </Col>
@@ -29,10 +28,10 @@ const BodyPage = ({body_state, clearData}) => (
                             <Card.Body>
                                 <Tab.Content>
                                     <Tab.Pane eventKey="patient-register">
-                                        <PatientForm />
+                                        <PatientForm/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="patient-list">
-                                        <PatientTable />
+                                        <PatientList />
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Card.Body>

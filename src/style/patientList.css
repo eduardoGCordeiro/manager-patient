@@ -1,10 +1,5 @@
-.placeholder-color-mask::placeholder {
-    color: #9da0a4;
-}
-
-.required {
-    color: red;
-    margin-bottom: auto;
+.btn-toolbar {
+    flex-wrap: nowrap;
 }
 
 .spinner {
@@ -17,8 +12,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 2;
+    z-index: 3;
     cursor: pointer;
     background: rgba(255, 255, 255, .8);
 }
-

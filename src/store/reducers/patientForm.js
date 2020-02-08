@@ -1,7 +1,17 @@
-import {ADD_CHANGES, ADD_ERRORS, ADD_NEW_PATIENT, CLEAR_DATA} from '../actions/actionsType';
+import {
+    ADD_CHANGES, 
+    ADD_ERRORS, 
+    ADD_NEW_PATIENT, 
+    CLEAR_DATA, 
+    SAVE_DATA,
+    EDIT_DATA,
+    SEND_DATA_SUCCESS,
+    SEND_DATA_ERROR, 
+    CONFIRM_ALERT
+} from '../actions/actionsType';
 
 const INITIAL_STATE = {
-    loading: false,
+    patient_id: '',
     patient_form_edit: {
         name: '',
         last_name: '',
@@ -43,13 +53,15 @@ const INITIAL_STATE = {
         address_number_error_msg: '',
         state_error_msg: '',
         city_error_msg: '',
-    }
-
+    },
+    send_data_success: false,
+    send_data_error: false,
+    loading: false
 };
 
 export default function patientForm(state = INITIAL_STATE, action){
+    
     switch (action.type) {
-
         case CLEAR_DATA:
             return {
                 ...state,
@@ -57,6 +69,41 @@ export default function patientForm(state = INITIAL_STATE, action){
                 errors: INITIAL_STATE.errors,
                 errors_msg: INITIAL_STATE.errors_msg
             };
+
+        case SAVE_DATA:
+            return {
+                ...state,
+                loading: true
+            }; 
+
+        case EDIT_DATA:
+            return {
+                ...state,
+                loading: true
+            }; 
+
+        case SEND_DATA_SUCCESS:             
+            return {
+                ...state,
+                patient_form_edit: INITIAL_STATE.patient_form_edit,
+                errors: INITIAL_STATE.errors,
+                errors_msg: INITIAL_STATE.errors_msg,
+                send_data_success: true,
+                loading: false
+            }
+
+        case SEND_DATA_ERROR:             
+            return {
+                ...state,
+                send_data_error: true,
+                loading: false
+            }
+
+        case CONFIRM_ALERT:
+            return {
+                ...state,
+                [action.field]: action.value
+            }
 
         case ADD_CHANGES:
             return {
