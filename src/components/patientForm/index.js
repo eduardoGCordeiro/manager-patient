@@ -114,7 +114,11 @@ export default class PatientForm extends Component {
     if(this.props.patient_data.patient_form_edit.age_of_birth === ''){
       this.props.addErrors('age_of_birth_error', true, 'Por favor, insira a data de nascimento.');
     }else {
-      this.props.addErrors('age_of_birth_error', false, '');
+      if(this.props.patient_data.patient_form_edit.age_of_birth.includes('_')){
+        this.props.addErrors('phone_error', true, 'Por favor, insira uma data válida.');
+      }else {
+        this.props.addErrors('age_of_birth_error', false, '');
+      }
     }
   };
 
@@ -127,18 +131,20 @@ export default class PatientForm extends Component {
       }else {
         this.props.addErrors('email_error', true, 'Por favor, insira um email válido.');
       }
+    }else {
+      this.props.addErrors('email_error', false, '');
     }
   };
 
 
   validatePhone() {
     if(this.props.patient_data.patient_form_edit.phone === ''){
-      this.props.addErrors('phone_error', 'is-invalid', 'Por favor, insira o número.');
+      this.props.addErrors('phone_error', true, 'Por favor, insira o número.');
     }else {
       if(this.props.patient_data.patient_form_edit.phone.includes('_')){
-        this.props.addErrors('phone_error', 'is-invalid', 'Por favor, insira um número válido.');
+        this.props.addErrors('phone_error', true, 'Por favor, insira um número válido.');
       }else {
-        this.props.addErrors('phone_error', '', '');
+        this.props.addErrors('phone_error', false, '');
       }
     }
   };
@@ -146,12 +152,12 @@ export default class PatientForm extends Component {
 
   validateCpf() {
     if(this.props.patient_data.patient_form_edit.cpf === ''){
-      this.props.addErrors('cpf_error', 'is-invalid', 'Por favor, insira o cpf.');
+      this.props.addErrors('cpf_error', true, 'Por favor, insira o cpf.');
     }else {
       if(this.props.patient_data.patient_form_edit.cpf.includes('_')){
-        this.props.addErrors('cpf_error', 'is-invalid', 'Por favor, insira um cpf válido.');
+        this.props.addErrors('cpf_error', true, 'Por favor, insira um cpf válido.');
       }else {
-        this.props.addErrors('cpf_error', '', '');
+        this.props.addErrors('cpf_error', false, '');
       }
     }
   };
@@ -159,12 +165,12 @@ export default class PatientForm extends Component {
 
   validateIdenty() {
     if(this.props.patient_data.patient_form_edit.identy === ''){
-      this.props.addErrors('identy_error', 'is-invalid', 'Por favor, insira a identidade.');
+      this.props.addErrors('identy_error', true, 'Por favor, insira a identidade.');
     }else {
       if(this.props.patient_data.patient_form_edit.identy.includes('_')){
-        this.props.addErrors('identy_error', 'is-invalid', 'Por favor, insira uma identidade válida.');
+        this.props.addErrors('identy_error', true, 'Por favor, insira uma identidade válida.');
       }else {
-        this.props.addErrors('identy_error', '', '');
+        this.props.addErrors('identy_error', false, '');
       }
     }
   }
@@ -172,12 +178,12 @@ export default class PatientForm extends Component {
 
   validateZipCode() {
       if(this.props.patient_data.patient_form_edit.zip_code === ''){
-        this.props.addErrors('zip_code_error', 'is-invalid', 'Por favor, insira o cep.');
+        this.props.addErrors('zip_code_error', true, 'Por favor, insira o cep.');
       }else {
         if(this.props.patient_data.patient_form_edit.zip_code.includes('_')){
-          this.props.addErrors('zip_code_error', 'is-invalid', 'Por favor, insira um cep válido.');
+          this.props.addErrors('zip_code_error', true, 'Por favor, insira um cep válido.');
         }else {
-          this.props.addErrors('zip_code_error', '', '');
+          this.props.addErrors('zip_code_error', false, '');
         }
       }
   }
@@ -236,12 +242,9 @@ export default class PatientForm extends Component {
 
 
   submitForm(event){
+
     event.preventDefault();
-    
-    //Condição para não executar a função quando o click do mouse for do lado direito.
-    if( event.nativeEvent.which === 3 ) {
-      return false; 
-    } 
+    let invalid_fields = false;
 
     this.validateName();
     this.validateLastName();
@@ -256,15 +259,15 @@ export default class PatientForm extends Component {
     this.validateAddress();
     this.validateAddressNumber();
 
-    let invalid_fields = false;
-
     for(let value of Object.values(this.props.patient_data.patient_form_edit)){
       if(value === ''){
         invalid_fields = true;
       }
     }
 
-    if(!invalid_fields){
+    if(invalid_fields){
+      return false;
+    }else {
       if(this.props.patient_data.patient_id === ''){
         this.props.fetchSaveData(this.props.patient_data.patient_form_edit);
       }else {
@@ -303,7 +306,6 @@ export default class PatientForm extends Component {
                 placeholder="Insira o nome do paciente"
                 value={this.props.patient_data.patient_form_edit.name}
                 onChange={(event) => this.handleInputName(event.target.value)}
-                onBlur={() => this.validateName()}
                 isInvalid={this.props.patient_data.errors.name_error}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.name_error_msg}</Form.Control.Feedback>
@@ -317,7 +319,6 @@ export default class PatientForm extends Component {
                 placeholder="Insira o sobrenome do paciente"
                 value={this.props.patient_data.patient_form_edit.last_name}
                 onChange={(event) => this.handleInputLastName(event.target.value)}
-                onBlur={() => this.validateLastName()}
                 isInvalid={this.props.patient_data.errors.last_name_error}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.last_name_error_msg}</Form.Control.Feedback>
@@ -332,7 +333,6 @@ export default class PatientForm extends Component {
                 max={CURRENT_DATE}
                 value={this.props.patient_data.patient_form_edit.age_of_birth}
                 onChange={(event) => this.handleInputAgeOfBirth(event.target.value)}
-                onBlur={() => this.validateAgeOfBirth()}
                 isInvalid={this.props.patient_data.errors.age_of_birth_error}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.age_of_birth_error_msg}</Form.Control.Feedback>
@@ -343,11 +343,10 @@ export default class PatientForm extends Component {
               <Form.Label> Celular <label className="required">*</label> </Form.Label>
               <InputMask 
                 placeholder="(__)_____-____"
-                className={"form-control placeholder-color-mask " + this.props.patient_data.errors.phone_error}
+                className={"form-control placeholder-color-mask " + (this.props.patient_data.errors.phone_error ? "is-invalid" : "")}
                 mask="(99)99999-9999"
                 value={this.props.patient_data.patient_form_edit.phone}
                 onChange={(event) => this.handleInputPhone(event.target.value)}
-                onBlur={() => this.validatePhone()}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.phone_error_msg}</Form.Control.Feedback>
             </Form.Group>
@@ -359,9 +358,8 @@ export default class PatientForm extends Component {
               <Form.Control
                 type="text"
                 placeholder="Insira o e-mail do paciente"
-                defaultValue={this.props.patient_data.patient_form_edit.email}
-                onChange={(event) => this.handleInputEmail(event.target.value)}
-                onBlur={() => this.validateEmail()}
+                value={this.props.patient_data.patient_form_edit.email}
+                onChange={(event) => this.handleInputEmail(event.target.value)}                
                 isInvalid={this.props.patient_data.errors.email_error}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.email_error_msg}</Form.Control.Feedback>
@@ -372,11 +370,10 @@ export default class PatientForm extends Component {
               <Form.Label> CPF <label className="required">*</label> </Form.Label>
               <InputMask 
                 placeholder="___.___.___-__"
-                className={"form-control placeholder-color-mask " + this.props.patient_data.errors.cpf_error}
+                className={"form-control placeholder-color-mask" + (this.props.patient_data.errors.cpf_error ? "is-invalid" : "")}
                 mask="999.999.999-99"
                 value={this.props.patient_data.patient_form_edit.cpf}
                 onChange={(event) => this.handleInputCpf(event.target.value)}
-                onBlur={() => this.validateCpf()}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.cpf_error_msg}</Form.Control.Feedback>
             </Form.Group>
@@ -386,11 +383,10 @@ export default class PatientForm extends Component {
               <Form.Label> Identidade <label className="required">*</label> </Form.Label>
               <InputMask 
                 placeholder="__.___.___-_"
-                className={"form-control placeholder-color-mask " + this.props.patient_data.errors.identy_error}
+                className={"form-control placeholder-color-mask " + (this.props.patient_data.errors.identy_error ? "is-invalid" : "")}
                 mask="99.999.999-9"
                 value={this.props.patient_data.patient_form_edit.identy}
                 onChange={(event) => this.handleInputIdenty(event.target.value)}
-                onBlur={() => this.validateIdenty()}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.identy_error_msg}</Form.Control.Feedback>
             </Form.Group>
@@ -400,11 +396,10 @@ export default class PatientForm extends Component {
               <Form.Label> CEP <label className="required">*</label> </Form.Label>
               <InputMask 
                 placeholder="_____-___"
-                className={"form-control placeholder-color-mask " + this.props.patient_data.errors.zip_code_error}
+                className={"form-control placeholder-color-mask " + (this.props.patient_data.errors.zip_code_error ? "is-invalid" : "")}
                 mask="99999-999"
                 value={this.props.patient_data.patient_form_edit.zip_code}
                 onChange={(event) => this.handleInputZipCode(event.target.value)}
-                onBlur={() => this.validateZipCode()}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.zip_code_error_msg}</Form.Control.Feedback>
             </Form.Group>
@@ -417,7 +412,6 @@ export default class PatientForm extends Component {
                 placeholder="Insira o estado do paciente"
                 value={this.props.patient_data.patient_form_edit.state}
                 onChange={(event) => this.handleInputState(event.target.value)}
-                onBlur={() => this.validateState()}
                 isInvalid={this.props.patient_data.errors.state_error}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.state_error_msg}</Form.Control.Feedback>
@@ -432,7 +426,6 @@ export default class PatientForm extends Component {
                 placeholder="Insira a cidade do paciente"
                 value={this.props.patient_data.patient_form_edit.city}
                 onChange={(event) => this.handleInputCity(event.target.value)}
-                onBlur={() => this.validateCity()}
                 isInvalid={this.props.patient_data.errors.city_error}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.city_error_msg}</Form.Control.Feedback>
@@ -445,7 +438,6 @@ export default class PatientForm extends Component {
                 placeholder="Insira o endereço do paciente"
                 value={this.props.patient_data.patient_form_edit.address}
                 onChange={(event) => this.handleInputAddress(event.target.value)}
-                onBlur={() => this.validateAddress()}
                 isInvalid={this.props.patient_data.errors.address_error}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.address_error_msg}</Form.Control.Feedback>
@@ -459,7 +451,6 @@ export default class PatientForm extends Component {
                 placeholder="Número endereço"
                 value={this.props.patient_data.patient_form_edit.address_number}
                 onChange={(event) => this.handleInputAddressNumber(event.target.value)}
-                onBlur={() => this.validateAddressNumber()}
                 isInvalid={this.props.patient_data.errors.address_number_error}
               />
               <Form.Control.Feedback type="invalid">{this.props.patient_data.errors_msg.address_number_error_msg}</Form.Control.Feedback>
@@ -467,7 +458,7 @@ export default class PatientForm extends Component {
           </Form.Row>
 
           <ButtonToolbar className="d-flex justify-content-center">
-                <Button type="button" variant="success" className="mr-1" onMouseDown={(event) => this.submitForm(event)}>
+                <Button type="button" variant="success" className="mr-1" onClick={(event) => this.submitForm(event)}>
                   Salvar
                 </Button>
                 <Button type="button" variant="secondary" onClick={() => this.props.clearData()}>

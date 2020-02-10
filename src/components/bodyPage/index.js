@@ -4,7 +4,7 @@ import { Container, Row, Col, Card, Nav, Tab } from 'react-bootstrap';
 import PatientForm from '../../store/containers/patientForm';
 import PatientList from '../../store/containers/patientList';
 
-const BodyPage = ({clearData, fetchPatients}) => (
+const BodyPage = ({clearData}) => (
     <main className="bg-light">
         <Container className='pt-5 pb-3'>
             <Row>
@@ -19,7 +19,7 @@ const BodyPage = ({clearData, fetchPatients}) => (
                                                 <Nav.Link eventKey='patient-register' onClick={ () => clearData() } >Cadastro de pacientes</Nav.Link>
                                             </Nav.Item>
                                             <Nav.Item>
-                                                <Nav.Link eventKey='patient-list' onClick={ () => fetchPatients() } >Lista de pacientes</Nav.Link>
+                                                <Nav.Link eventKey='patient-list'>Lista de pacientes</Nav.Link>
                                             </Nav.Item>
                                         </Nav>
                                     </Col>

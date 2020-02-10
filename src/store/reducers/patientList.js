@@ -1,6 +1,7 @@
 import {
     LIST_PATIENTS, 
     DELETE_DATA,
+    DELETE_DATA_PENDING,
     DELETE_DATA_SUCCESS,
     DELETE_DATA_ERROR,
     LIST_PATIENTS_SUCCESS,
@@ -10,6 +11,7 @@ import {
 
 const INITIAL_STATE = {
     patient_list: [],
+    patient_delete: '',
     patient_delete_success: false,
     patient_delete_warning: false, 
     patient_delete_error: false,
@@ -20,6 +22,20 @@ const INITIAL_STATE = {
 export default function patientList(state = INITIAL_STATE, action){
 
     switch (action.type) {
+
+        case DELETE_DATA:
+            return {
+                ...state,
+                patient_delete_warning: false,
+                loading: true
+            }
+        
+        case DELETE_DATA_PENDING:
+            return {
+                ...state,
+                patient_delete: action.patient,
+                patient_delete_warning: true
+            }
 
         case DELETE_DATA_SUCCESS:
             return{
@@ -60,9 +76,6 @@ export default function patientList(state = INITIAL_STATE, action){
                 patient_get_error: true,
                 loading: false
             }
-        
-        case DELETE_DATA:
-            return {...state}
 
         default: 
             return state;

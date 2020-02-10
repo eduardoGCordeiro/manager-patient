@@ -2,6 +2,10 @@
     flex-wrap: nowrap;
 }
 
+.body-list {
+    position: relative;
+}
+
 .spinner {
     position: absolute;
     text-align: center;
