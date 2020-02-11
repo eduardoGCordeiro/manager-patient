@@ -1,7 +1,6 @@
 import {
     ADD_CHANGES, 
     ADD_ERRORS, 
-    ADD_NEW_PATIENT, 
     CLEAR_DATA, 
     SAVE_DATA,
     EDIT_DATA,
@@ -141,9 +140,6 @@ export default function patientForm(state = INITIAL_STATE, action){
                     [action.field_error_msg]: action.value_error_msg
                 } 
             };    
-
-        case ADD_NEW_PATIENT:
-            return {...state};
         
         default: 
             return state;

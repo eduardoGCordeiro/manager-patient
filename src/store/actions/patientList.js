@@ -113,7 +113,6 @@ export function deletePatient(patient_id) {
           }
       }).then(response => response.json())
         .then(response => {
-          console.log(response);
           if( response.errorType || response.statusCode === 500){
               throw (response);
           }
