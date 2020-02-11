@@ -1,6 +1,4 @@
-import React, { Component } from 'react';
-
-import { CURRENT_YEAR } from '../../constants';
+import React from 'react';
 
 import { Container, ButtonToolbar, Button, Spinner } from 'react-bootstrap';
 import { faEdit, faWindowClose } from '@fortawesome/free-solid-svg-icons';
@@ -61,7 +59,7 @@ const tableHeader = [
     },
     {
         title: 'Data de nascimento',
-        prop: 'age_of_birth', 
+        prop: 'birth', 
         sortable: true,
         filterable: true,
     },
@@ -96,78 +94,75 @@ const classes = {
 }
 
 
-export default class patientList extends Component {
+const patientList = ({patient_data, confirmAlert, deletePatient, editPage, deleteDataPending}) => (
+   
+   <div className="table-responsive body-list">
+            
+        { patient_data.loading ? <div className="spinner"><Spinner animation="border" variant="primary" /></div> : null}
 
-    componentDidMount() {
-        this.props.fetchPatients();
-    };
+        <SweetAlert 
+        success
+        title="Sucesso!"
+        show={ patient_data.patient_delete_success }
+        onConfirm={() =>  confirmAlert('patient_delete_success', false)}>Dados atualizados com sucesso.</SweetAlert>
+        
+        <SweetAlert 
+          warning
+          title="Atenção!"
+          show={ patient_data.patient_delete_warning }
+          showCancel
+          confirmBtnText="Sim, deletar paciente"
+          confirmBtnBsStyle="danger"
+          cancelBtnText="Cancelar"
+          cancelBtnBsStyle="default"
+          onConfirm={() => deletePatient(patient_data.patient_delete) }
+          onCancel={() => confirmAlert('patient_delete_warning', false)}>Você realmente deseja deletar esse paciente?</SweetAlert>
+        
+        <SweetAlert 
+          error
+          title="Erro!"
+          show={ patient_data.patient_delete_error }
+          onConfirm={() => confirmAlert('patient_delete_error', false)}>Tente novamente mais tarde.</SweetAlert>
+        
+        <SweetAlert 
+          error
+          title="Erro!"
+          show={ patient_data.patient_get_error  }
+          onConfirm={() => confirmAlert('patient_get_error', false)}>Tente novamente mais tarde.</SweetAlert>
+        <Container>
+        <Datatable 
+            tableHeaders = { tableHeader }
+            tableBody = { patient_data.patient_list.map(function(data){
+                                                                        data.actions =  <ButtonToolbar className='btn-center'>
+                                                                                            <Button variant="success" className="mr-1" size="sm" onClick={() => editPage(data)}>
+                                                                                                <FontAwesomeIcon icon={ faEdit }/>
+                                                                                            </Button>
+                                                                                            <Button variant="danger" size="sm" onClick={() => deleteDataPending(data.id)}>
+                                                                                                <FontAwesomeIcon icon={ faWindowClose }/>
+                                                                                            </Button>
+                                                                                        </ButtonToolbar>;               
+                                                                        data.complete_address = '';                                      
+                                                                        data.birth = '';                                      
+                                                                        data.age = '';                     
+                                                                        data.complete_address = data.address + ' ' + data.address_number;
+                                                                        data.birth = data.age_of_birth.split('-');
+                                                                        data.birth =  data.birth[2] + '/' + data.birth[1] + '/' + data.birth[0];
+                                                                        data.calculate_time = new Date(data.age_of_birth);
+                                                                        data.age = (parseInt((((((new Date().getTime() - data.calculate_time.getTime())/1000)/(60 * 60 * 24)))/365.25)));
+                                                                        return data;
+                                                                    }, this) }
+            keyName = "patient-table"
+            tableClass="striped hover"
+            rowsPerPage = {20}
+            filterText = "Busca avançada"
+            rowsPerPageOption = {[10, 20, 30]}
+            initialSort = {{ prop: 'code', isAscending: true}}
+            labels = { customLabels }
+            className = "filter"
+            classes = { classes }                 
+            />
+        </Container>
+    </div>
+);
 
-    render(){
-        return (
-            <div className="table-responsive body-list">
-                
-                {this.props.patient_data.loading ? <div className="spinner"><Spinner animation="border" variant="primary" /></div> : null}
-
-                <SweetAlert 
-                success
-                title="Sucesso!"
-                show={ this.props.patient_data.patient_delete_success }
-                onConfirm={() =>  this.props.confirmAlert('patient_delete_success', false)}>Dados atualizados com sucesso.</SweetAlert>
-                
-                <SweetAlert 
-                  warning
-                  title="Atenção!"
-                  show={ this.props.patient_data.patient_delete_warning }
-                  showCancel
-                  confirmBtnText="Sim, deletar paciente"
-                  confirmBtnBsStyle="danger"
-                  cancelBtnText="Cancelar"
-                  cancelBtnBsStyle="default"
-                  onConfirm={() => this.props.deletePatient(this.props.patient_data.patient_delete) }
-                  onCancel={() => this.props.confirmAlert('patient_delete_warning', false)}>Você realmente deseja deletar esse paciente?</SweetAlert>
-                
-                <SweetAlert 
-                  error
-                  title="Erro!"
-                  show={ this.props.patient_data.patient_delete_error }
-                  onConfirm={() => this.props.confirmAlert('patient_delete_error', false)}>Tente novamente mais tarde.</SweetAlert>
-                
-                <SweetAlert 
-                  error
-                  title="Erro!"
-                  show={ this.props.patient_data.patient_get_error  }
-                  onConfirm={() => this.props.confirmAlert('patient_get_error', false)}>Tente novamente mais tarde.</SweetAlert>
-                <Container>
-                <Datatable 
-                    tableHeaders = { tableHeader }
-                    tableBody = { this.props.patient_data.patient_list.map(function(data){
-                                                                                data.actions =  <ButtonToolbar className='btn-center'>
-                                                                                                    <Button variant="success" className="mr-1" size="sm" onClick={() => this.props.editData(data)}>
-                                                                                                        <FontAwesomeIcon icon={ faEdit }/>
-                                                                                                    </Button>
-                                                                                                    <Button variant="danger" size="sm" onClick={() => this.props.deleteDataPending(data.id)}>
-                                                                                                        <FontAwesomeIcon icon={ faWindowClose }/>
-                                                                                                    </Button>
-                                                                                                </ButtonToolbar>;               
-                                                                                data.complete_address = '';                                                                                                 
-                                                                                data.complete_address = data.address + ' ' + data.address_number;
-                                                                                let age_of_birth = new Date(data.age_of_birth);
-                                                                                data.age = '';
-                                                                                data.age = (CURRENT_YEAR - age_of_birth.getFullYear());
-                                                                                return data;
-                                                                            }, this) }
-                    keyName = "patient-table"
-                    tableClass="striped hover"
-                    rowsPerPage = {20}
-                    filterText = "Busca avançada"
-                    rowsPerPageOption = {[10, 20, 30]}
-                    initialSort = {{ prop: 'code', isAscending: true}}
-                    labels = { customLabels }
-                    className = "filter"
-                    classes = { classes }                 
-                    />
-                </Container>
-            </div>
-        );
-    };
-};
+export default patientList;

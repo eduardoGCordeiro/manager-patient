@@ -25,9 +25,10 @@ export function saveData(){
 }
 
 
-export function editData(){
+export function editData(data){
   return {
-    type: EDIT_DATA
+    type: EDIT_DATA,
+    data: data
   }
 }
 
@@ -87,6 +88,30 @@ export function fetchSaveData(data) {
       dispatch(saveData());
       fetch('https://ybht24vw4a.execute-api.us-east-2.amazonaws.com/Patient-Manager/patient-manager', {
           method: 'POST',     
+          headers: {
+              'x-api-key': 'jsxcKzoEKCag5Ix4dt88F46ZOizynbtN8LHoAJjH',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+      }).then(response => response.json())
+        .then(response => {
+          if( response.errorType || response.statusCode === 500){
+              throw (response);
+          }
+          dispatch(sendDataSuccess());
+        })
+        .catch(error => {
+          dispatch(sendDataError());
+        })
+  }
+};
+
+
+export function fetchEditData(patient_id, data) {
+  return dispatch => {
+      dispatch(saveData());
+      fetch('https://ybht24vw4a.execute-api.us-east-2.amazonaws.com/Patient-Manager/patient-manager/' + patient_id, {
+          method: 'PUT',     
           headers: {
               'x-api-key': 'jsxcKzoEKCag5Ix4dt88F46ZOizynbtN8LHoAJjH',
               'Content-Type': 'application/json'

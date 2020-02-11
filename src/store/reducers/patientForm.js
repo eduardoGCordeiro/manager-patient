@@ -79,7 +79,22 @@ export default function patientForm(state = INITIAL_STATE, action){
         case EDIT_DATA:
             return {
                 ...state,
-                loading: true
+                patient_id: action.data.id,
+                patient_form_edit: {
+                    ...state.patient_form_edit,
+                    name: action.data.name,
+                    last_name: action.data.last_name,
+                    age_of_birth: action.data.age_of_birth,
+                    phone: action.data.phone,
+                    email: action.data.email,
+                    cpf: action.data.cpf,
+                    identy: action.data.identy,
+                    zip_code: action.data.zip_code,
+                    address: action.data.address,
+                    address_number: action.data.address_number,
+                    state: action.data.state,
+                    city: action.data.city,
+                }
             }; 
 
         case SEND_DATA_SUCCESS:             

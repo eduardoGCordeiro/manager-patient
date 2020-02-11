@@ -7,8 +7,10 @@ import {
     LIST_PATIENTS_SUCCESS,
     LIST_PATIENTS_ERROR,
     CONFIRM_ALERT, 
-    EDIT_DATA
 } from '../actions/actionsType';
+
+import { editData } from './patientForm';
+import { changePage } from './bodyPage';
 
 export function listPatients(){
   return {
@@ -26,10 +28,10 @@ export function confirmAlert(field, value){
 }
 
 
-export function editData(patient){
-  return {
-    type: EDIT_DATA,
-    patient: patient
+export function editPage(data){
+  return dispatch => {
+    dispatch(editData(data));
+    dispatch(changePage('patient-form'));
   }
 }
 

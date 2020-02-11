@@ -2,12 +2,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import BodyPage from '../../components/bodyPage';
-import { clearData } from '../actions/patientForm';
+import * as BodyPageActions from '../actions/bodyPage';
 
 const mapStateToProps = state => ({
-    state: {}
+    body_page: state.bodyPage
 });
 
-const mapDispatchProps = dispatch => bindActionCreators({clearData}, dispatch)
+const mapDispatchProps = dispatch => bindActionCreators(BodyPageActions, dispatch);
 
 export default connect(mapStateToProps, mapDispatchProps)(BodyPage);

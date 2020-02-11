@@ -1,3 +1,4 @@
+export const CHANGE_PAGE = 'CHANGE_PAGE';
 export const CLEAR_DATA = 'CLEAR_DATA';
 export const SAVE_DATA = 'SAVE_DATA';
 export const EDIT_DATA = 'EDIT_DATA';

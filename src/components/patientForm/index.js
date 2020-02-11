@@ -246,6 +246,12 @@ export default class PatientForm extends Component {
     event.preventDefault();
     let invalid_fields = false;
 
+    if(navigator.language !== 'pt-BR'){
+      let age_of_birth_format = this.props.patient_data.patient_form_edit.age_of_birth.split('-');
+      age_of_birth_format = age_of_birth_format[0] + '-' + age_of_birth_format[2] + '-' + age_of_birth_format[1];
+      this.props.addChanges('age_of_birth', age_of_birth_format);
+    }
+
     this.validateName();
     this.validateLastName();
     this.validateAgeOfBirth();
@@ -271,7 +277,7 @@ export default class PatientForm extends Component {
       if(this.props.patient_data.patient_id === ''){
         this.props.fetchSaveData(this.props.patient_data.patient_form_edit);
       }else {
-        this.props.editData();
+        this.props.fetchEditData(this.props.patient_data.patient_id, this.props.patient_data.patient_form_edit);
       }
     }
 
