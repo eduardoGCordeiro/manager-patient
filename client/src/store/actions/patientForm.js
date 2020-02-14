@@ -147,6 +147,28 @@ export function fetchSaveData(data) {
           if( response.errorType || response.statusCode === 500){
               throw (response);
           }
+          dispatch(fetchSaveDataLocal(response));
+        })
+        .catch(error => {
+          dispatch(sendDataError());
+        })
+  }
+};
+
+
+export function fetchSaveDataLocal(data) {
+  return dispatch => {
+      fetch('http://localhost:5000/patient', {
+          method: 'POST',     
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+      }).then(response => response.json())
+        .then(response => {
+          if( response.error){
+              throw (response);
+          }
           dispatch(sendDataSuccess());
         })
         .catch(error => {
@@ -168,6 +190,28 @@ export function fetchEditData(data) {
       }).then(response => response.json())
         .then(response => {
           if( response.errorType || response.statusCode === 500){
+              throw (response);
+          }
+          dispatch(fetchEditDataLocal(data));
+        })
+        .catch(error => {
+          dispatch(sendDataError());
+        })
+  }
+};
+
+
+export function fetchEditDataLocal(data) {
+  return dispatch => {
+      fetch('http://localhost:5000/patient/' + data.patientForm.patient_id, {
+          method: 'PUT',     
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data.patientForm.patient_form_edit)
+      }).then(response => response.json())
+        .then(response => {
+          if( response.error){
               throw (response);
           }
           dispatch(sendDataSuccess());

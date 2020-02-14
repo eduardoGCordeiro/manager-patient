@@ -116,6 +116,28 @@ export function deletePatient(patient_id) {
           if( response.errorType || response.statusCode === 500){
               throw (response);
           }
+          dispatch(deletePatientLocal(patient_id));
+        })
+        .catch(error => {
+          dispatch(deleteDataError());
+        })
+  }
+};
+
+
+export function deletePatientLocal(patient_id) {
+  return dispatch => {
+      dispatch(deleteData());
+      fetch('http://localhost:5000/patient/' + patient_id, {
+          method: 'DELETE',
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      }).then(response => response.json())
+        .then(response => {
+          if( response.error ){
+              throw (response);
+          }
           dispatch(fetchPatients());
           dispatch(deleteDataSuccess());
         })
