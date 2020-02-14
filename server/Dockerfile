@@ -1,21 +1,19 @@
-FROM node:8.17.0-alpine
+FROM anapsix/alpine-java
 
-WORKDIR /usr/src/manager-patient
+RUN apk add --update nodejs npm
 
-COPY package.json ./client
-COPY package-lock.json ./client
+WORKDIR /usr/src/manager-patient/
 
-COPY package.json .
-COPY package-lock.json .
+COPY package.json package-lock.json ./serve/
+COPY package.json package-lock.json ./client/
 
-RUN apk add openjdk8-jre-base
-
-RUN npm install
+RUN npm install ./serve
+RUN npm install ./client
 
 COPY . .
 
 CMD ["npm", "run", "dev"]
 
 EXPOSE 3000
-EXPOSE 5000
-EXPOSE 8000
+
+

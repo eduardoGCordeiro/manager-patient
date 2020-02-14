@@ -5,14 +5,17 @@
 /.pnp
 .pnp.js
 /client/node_modules
-/client/Dockerfile
 /server/node_modules
-/server/Dockerfile
-/DynamoDB/Dockerfile
-/DynamoDB/init_dynamodb.txt
 
 # testing
 /coverage
+
+# docker
+dockers.txt
+/DynamoDB/Dockerfile
+/server/Dockerfile
+Dockerfile
+.dockerignore
 
 # production
 /build
