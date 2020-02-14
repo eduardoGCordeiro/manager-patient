@@ -2,8 +2,8 @@
     "name": "manager-patients",
     "version": "0.1.0",
     "scripts": {
-        "client": "cd ../client && npm start",
         "server": "node server.js",
+        "client": "cd ../client && npm start",
         "database": "cd ../DynamoDB && java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb",
         "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\" \"npm run database\""
     },
